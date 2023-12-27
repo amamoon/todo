@@ -1,35 +1,35 @@
-import DeployButton from '../components/DeployButton'
-import AuthButton from '../components/AuthButton'
-import { createClient } from '@/utils/supabase/server'
-import ConnectSupabaseSteps from '@/components/ConnectSupabaseSteps'
-import SignUpUserSteps from '@/components/SignUpUserSteps'
-import Header from '@/components/Header'
-import { cookies } from 'next/headers'
+import { createClient } from "@/utils/supabase/server";
+import { cookies } from "next/headers";
+import Link from "next/link"
 
 export default async function Index() {
+
+
 	const cookieStore = cookies()
+	const supabase = createClient(cookieStore)
+	
+	const { data: { session }, error } = await supabase.auth.getSession()
 
-	const canInitSupabaseClient = () => {
-		// This function is just for the interactive tutorial.
-		// Feel free to remove it once you have Supabase connected.
-		try {
-			createClient(cookieStore)
-			return true
-		} catch (e) {
-			return false
-		}
-	}
-
-	const isSupabaseConnected = canInitSupabaseClient()
+	const loggedIn:boolean = !(session == null)
 
 	return (
 		<div className="flex-1 w-full flex flex-col gap-20 items-center">
 
 			<div className="animate-in flex-1 flex flex-col gap-20 opacity-0 max-w-4xl px-3">
-				<Header />
 				<main className="flex-1 flex flex-col gap-6">
-					<h2 className="font-bold text-4xl mb-4">Next steps</h2>
-					{isSupabaseConnected ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
+					<h2 className="font-bold text-4xl mb-4">Welcome to a basic Todo App</h2>
+					{loggedIn ? 
+					<p>navigate to the <Link className="underline" href={"/todo"}>app</Link></p> 
+					:
+					<p><Link className="underline" href={"/login"}>login or sign up</Link></p> 
+					}
+					<div>
+						<p>built primarily using:</p>
+						<ul>
+							<li>nextjs & </li>
+							<li>supabase</li>
+						</ul>
+					</div>
 				</main>
 			</div>
 

@@ -12,7 +12,10 @@ export async function GET() {
         } = await supabase.auth.getUser();
 
         if(!user){
-            throw Error("Unauthorized");
+            return new NextResponse("no user", {
+                status: 500,
+                headers: { 'Content-Type': 'application/json' },
+            });
         }
 
         const { 
@@ -45,8 +48,12 @@ export async function POST(request:NextRequest) {
         } = await supabase.auth.getUser();
 
         if(!user){
-            throw Error("Unauthorized");
+            return new NextResponse("no user", {
+                status: 500,
+                headers: { 'Content-Type': 'application/json' },
+            });
         }
+
 
         const {
             data,
@@ -89,8 +96,12 @@ export async function PUT(request:NextRequest) {
         } = await supabase.auth.getUser();
 
         if(!user){
-            throw Error("Unauthorized");
+            return new NextResponse("no user", {
+                status: 500,
+                headers: { 'Content-Type': 'application/json' },
+            });
         }
+
 
         const {
             data,
@@ -124,8 +135,12 @@ export async function DELETE(request:NextRequest) {
         } = await supabase.auth.getUser();
 
         if(!user){
-            throw Error("Unauthorized");
+            return new NextResponse("no user", {
+                status: 500,
+                headers: { 'Content-Type': 'application/json' },
+            });
         }
+
 
         const {
             data,
